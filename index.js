@@ -14,19 +14,18 @@ const md = require('markdown-it')({
 module.exports = function(source){
     this.cacheable && this.cacheable();
     
-    // lets load the shared locals object
-    let locals = this.options.locals; 
-
     // get which config options to load
-    let loader = utils.getLoaderConfig(this, "pages");
-    
-    let pug = utils.getLoaderConfig(this, "pug");
+    let loader = utils.getOptions(this);
+
+    // lets load the shared locals object
+    let locals = loader.locals; 
 
     let page = matter(source);
     
     // compile content through markdown
     // divide into individual page section key/values if needed
     if (page.content) {
+
         // trim based on Content Sections `%% key %%` (see README)
         let content = page.content.trim().split("%%");
         
@@ -38,6 +37,13 @@ module.exports = function(source){
             page.content = content[0];
         } 
         else {
+            content.forEach(
+                (element) => {
+                    let temp = matteryaml.safeLoad(element)
+                    console.log ( temp )
+                
+            })
+
             let i = 0;
             do {
                 // this is a variable assignment
@@ -63,9 +69,10 @@ module.exports = function(source){
 
     // get the associated template
     if (!page.data.template) {
-        page.data.template = loader.default_template;
+        page.data.template = loader.config.default_template;
     }
-    page.data.template_url = `${loader.template_dir}/${page.data.template}.pug`
+
+    page.data.template_url = `${loader.config.template_dir}/${page.data.template}.pug`
     this.addDependency( path.resolve( page.data.template_url ) );
     page.data.template = fs.readFileSync(page.data.template_url, 'utf8')
 
