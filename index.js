@@ -58,6 +58,9 @@ module.exports = function (source) {
     if (page.data.slug) {
         page.resourcePath = `${page.data.slug}`
     }
+    else {
+        page.resourcePath = `[path][name]`
+    }
 
     // get the associated template
     if (!page.data.template) {
