@@ -63,9 +63,13 @@ module.exports = function (source) {
     }
 
     // get the associated template
-    if (!page.data.template) {
-        page.data.template = loader.config.default_template
-    }
+    page.data.template = (page.data.template)
+        ? page.data.template
+        : loader.config.default_template
+
+    page.data.template = (page.data.postprocess.template)
+        ? page.data.postprocess.template
+        : page.data.template
 
     page.data.template_url = `${loader.config.template_dir}/${page.data.template}.pug`
     this.addDependency( path.resolve( page.data.template_url ) )
