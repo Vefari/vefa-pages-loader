@@ -68,7 +68,7 @@ module.exports = function (source) {
         : loader.config.default_template
 
     // for further processing by a server-side language
-    page.data.template = (page.data.postprocess.template)
+    page.data.template = (page.data.postprocess && page.data.postprocess.template)
         ? page.data.postprocess.template
         : page.data.template
 
