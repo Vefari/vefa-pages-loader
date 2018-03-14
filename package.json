@@ -1,7 +1,7 @@
 {
   "name": "vefa-pages-loader",
   "description": "Generate pages from markdown, yaml front-matter, and pug templates",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "author": "Cobey Potter <cobey@wellfire.co> (http://wellfire.co)",
   "license": "MIT",
   "repository": {},
