@@ -10,11 +10,13 @@ module.exports = function (source) {
     this.cacheable && this.cacheable(true)
     
     // get which config options to load
-    let loader = utils.getOptions(this)
+    let config = utils.getOptions(this)
 
     // lets load the shared locals object
-    let locals = loader.locals 
-
+    let locals = config.locals 
+    if (!config.markdown) {
+        config.locals.markdown = require("./plugins/markdown")
+    }
     const page = matter(source)
     
     if (!page.data.content) {
