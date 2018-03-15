@@ -13,10 +13,11 @@ module.exports = function (source) {
     let config = utils.getOptions(this)
 
     // lets load the shared locals object
-    let locals = config.locals 
     if (!config.markdown) {
         config.locals.markdown = require("./plugins/markdown")
     }
+    let locals = config.locals 
+
     const page = matter(source)
     
     if (!page.data.content) {
@@ -57,24 +58,19 @@ module.exports = function (source) {
     }
 
     // set up the appropriate filename
-    if (page.data.slug) {
-        page.resourcePath = `${page.data.slug}`
-    }
-    else {
-        page.resourcePath = `[path][name]`
-    }
+    page.resourcePath = (page.data.slug) ? `${page.data.slug}` : `[path][name]`
 
     // get the associated template
     page.data.template = (page.data.template)
         ? page.data.template
-        : loader.config.default_template
+        : config.config.default_template
 
     // for further processing by a server-side language
     page.data.template = (page.data.postprocess && page.data.postprocess.template)
         ? page.data.postprocess.template
         : page.data.template
 
-    page.data.template_url = `${loader.config.template_dir}/${page.data.template}.pug`
+    page.data.template_url = `${config.config.template_dir}/${page.data.template}.pug`
     this.addDependency( path.resolve( page.data.template_url ) )
     page.data.template_file = fs.readFileSync(page.data.template_url, 'utf8')
     return page
